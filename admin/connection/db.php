@@ -1,27 +1,24 @@
 <?php
 
-	ini_set('display_errors', 1);
-	error_reporting(~0);
-        $aa = 1;
+session_start();
 
-   //global $conn; 
-   $user = "root";
-   $pass = "123456";
-   $db = "resorta";
-   $host = "localhost";
-   
-   /*$conn = new PDO("mysql:host=localhost;dbname=resorta", 'root', 123456, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+$DB_host = "localhost";
+$DB_user = "root";
+$DB_pass = "123456";
+$DB_name = "resorta";
 
-	if($conn)
-	{
-		echo "Database Connected.";
-	}
-	else
-	{
-		echo "Database Connect Failed.";
-	}
+try
+{
+	$DB_con = new PDO("mysql:host={$DB_host};dbname={$DB_name}",$DB_user,$DB_pass);
+	$DB_con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+}
+catch(PDOException $e)
+{
+	echo $e->getMessage();
+}
 
-	$conn = null;
-    * 
-    */
+
+include_once 'class.user.php';
+$user = new USER($DB_con);
+//$dbConn = new dbConn($DB_con);
 ?>

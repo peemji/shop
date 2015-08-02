@@ -1,10 +1,11 @@
 <?php
 require_once 'connection/db.php';
+echo $_SESSION['user_session'];
 try {
-    $conn = new PDO("mysql:host=$host;dbname=$db", $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+    //$conn = new PDO("mysql:host=$DB_host;dbname=$DB_name", $DB_user, $DB_pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
 
     $sql = 'SELECT * FROM resortdata where userId =1 ';
-    $q = $conn->query($sql);
+    $q = $user->query($sql);
     $q->setFetchMode(PDO::FETCH_ASSOC);
 } catch (PDOException $pe) {
     die("Could not connect to the database $dbname :" . $pe->getMessage());

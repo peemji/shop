@@ -1,7 +1,7 @@
 <?php
 require_once 'connection/db.php';
 try {
-    $conn = new PDO("mysql:host=$host;dbname=$db", $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+    $conn = new PDO("mysql:host=$DB_host;dbname=$DB_name", $DB_user, $DB_pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
 
     $sql = 'SELECT * FROM room as a inner join roomtype as b on a.typeID = b.typeID'
             . ' where a.resortID =1 ';
