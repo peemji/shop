@@ -3,7 +3,8 @@ require_once 'connection/db.php';
 try {
     $conn = new PDO("mysql:host=$host;dbname=$db", $user, $pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
 
-    $sql = 'SELECT * FROM resortdata where userId =1 ';
+    $sql = 'SELECT * FROM room as a inner join roomtype as b on a.typeID = b.typeID'
+            . ' where a.resortID =1 ';
     $q = $conn->query($sql);
     $q->setFetchMode(PDO::FETCH_ASSOC);
 } catch (PDOException $pe) {
@@ -60,7 +61,7 @@ try {
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>
-                        ข้อมูลรีสอร์ท
+                        ห้องพัก
                         <small>รายละเอียด</small>
                     </h1>
                     <ol class="breadcrumb">
@@ -73,97 +74,45 @@ try {
                 <section class="content">
 
                     <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">ประเภทห้องพัก</h3>
+                        </div><!-- /.box-header -->
                         <div class="box-body">
                             <table id="example2" class="table table-bordered table-hover" width="50%">
                                 <thead>
                                     <tr>
-                                        <th>หัวข้อ</th>
-                                        <th>รายละเอียด</th>
+                                        <th>ลำดับ</th>
+                                        <th>ชื่อห้องพัก</th>
+                                        <th>ประเภทห้องพัก</th>
+                                        <th>จำนวนห้อง</th>
+                                        <th>เปิดใช้</th>
+                                        <th>ราคาเต็ม</th>
+                                        <th>ส่วนลด</th>
+                                        <th>จัดการ</th>
 
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php while ($r = $q->fetch()): ?>
                                         <tr>
-                                            <td>ชื่อรีสอร์ท ภาษาไทย</td>
-                                            <td><?php echo htmlspecialchars($r['nameTH']); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>ที่อยู่</td>
-                                            <td><?php echo htmlspecialchars($r['addressTH']); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>เบอร์โทรศัพท์</td>
-                                            <td><?php echo htmlspecialchars($r['telResort']); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>เบอร์มือถือ</td>
-                                            <td><?php echo htmlspecialchars($r['telMobile']); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>บริเวณที่ตั้ง</td>
-                                            <td><?php echo htmlspecialchars($r['location']); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>จำนวนห้อง</td>
-                                            <td><?php echo htmlspecialchars($r['totalRoom']); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>ข้อมูลรีสอร์ท</td>
-                                            <td><?php echo htmlspecialchars($r['information']); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>นโยบาย</td>
-                                            <td><?php echo htmlspecialchars($r['vision']); ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>ที่จอกรถ</td>
-                                            <td><?php if($r['paking'] == 0){ echo "ไม่มี";} else { echo "มี";} ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>พนักงานบริการ</td>
-                                            <td><?php if($r['roomService'] == 0){ echo "ไม่มี";} else { echo "มี";} ?> </td>                                               
-                                        </tr>
-                                        <tr>
-                                            <td>บาร์</td>
-                                            <td><?php if($r['bar'] == 0){ echo "ไม่มี";} else { echo "มี";} ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>จักรยาน</td>
-                                            <td><?php if($r['bicycle'] == 0){ echo "ไม่มี";} else { echo "มี";} ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>บริการซักรีด</td>
-                                            <td><?php if($r['laundry'] == 0){ echo "ไม่มี";} else { echo "มี";} ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>สระว่ายน้ำ</td>
-                                            <td><?php if($r['pool'] == 0){ echo "ไม่มี";} else { echo "มี";} ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>ห้องอาหาร</td>
-                                            <td><?php if($r['restaurant'] == 0){ echo "ไม่มี";} else { echo "มี";} ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>ร้านสะดวกซื้อ</td>
-                                            <td><?php if($r['shop'] == 0){ echo "ไม่มี";} else { echo "มี";} ?></td>
-                                        </tr>
-                                                                                <tr>
-                                            <td>จุดสูบบุหรี่</td>
-                                            <td><?php if($r['smokingArea'] == 0){ echo "ไม่มี";} else { echo "มี";} ?></td>
-                                        </tr>
-                                                                                <tr>
-                                            <td>สปา</td>
-                                            <td><?php if($r['spa'] == 0){ echo "ไม่มี";} else { echo "มี";} ?></td>
-                                        </tr>
-                                                                                <tr>
-                                            <td>ห้องฟิตเนต</td>
-                                            <td><?php if($r['fitness'] == 0){ echo "ไม่มี";} else { echo "มี";} ?></td>
+                                            <?php
+                                            $id = 0;
+                                            $id++;
+                                            ?>
+                                            <td><?php echo $id; ?></td>
+                                            <td><?php echo htmlspecialchars($r['roomName']); ?></td>
+                                            <td><?php echo htmlspecialchars($r['typeName']); ?></td>
+                                            <td><?php echo htmlspecialchars($r['roomTotal']); ?></td>
+                                            <td><?php echo htmlspecialchars($r['roomUse']); ?></td>
+                                            <td><?php echo htmlspecialchars($r['roomPrice']); ?></td>
+                                            <td><?php echo htmlspecialchars($r['roomDiscount'])."%"; ?></td>
+                                            <td>แก้ไข</td>
+                                        </tr>                                        
                                     <?php endwhile; ?>
                                 </tbody>
                             </table>
                             <p>
-                            <div class="voffset5"><a href="#" class="btn btn-primary">แก้ไข</a></div>
+                            <div class="voffset5"><a href="#" class="btn btn-primary">เพิ่มประเภทห้องพัก</a></div>
                             </p>
                         </div><!-- /.box-body -->
                     </div><!-- /.box -->

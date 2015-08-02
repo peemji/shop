@@ -9,14 +9,14 @@
             <li class="header">MAIN NAVIGATION</li>
 
             <li>
-                <a href="#">
+                <a href="detailresort.php">
                     <i class="fa fa-files-o"></i>
                     <span>รายละเอียดรีสอร์ท</span>
                 </a>
             </li>
 
             <li>
-                <a href="#">
+                <a href="manageroom.php">
                     <i class="fa fa-files-o"></i>
                     <span>รายละเอียดห้องพัก</span>
                 </a>
