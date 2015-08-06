@@ -1,15 +1,18 @@
 <?php
-require_once 'connection/db.php';
-echo $_SESSION['user_session'];
-try {
-    //$conn = new PDO("mysql:host=$DB_host;dbname=$DB_name", $DB_user, $DB_pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
-
-    $sql = 'SELECT * FROM resortdata where userId =1 ';
-    $q = $user->query($sql);
-    $q->setFetchMode(PDO::FETCH_ASSOC);
-} catch (PDOException $pe) {
-    die("Could not connect to the database $dbname :" . $pe->getMessage());
+include_once 'connection/db.php';
+if(!$user->is_loggedin())
+{
+ $user->redirect('index.php');
 }
+$user_id = $_SESSION['user_session'];
+$stmt = $DB_con->prepare("SELECT * FROM users WHERE user_id=:user_id");
+$stmt->execute(array(":user_id"=>$user_id));
+$userRow=$stmt->fetch(PDO::FETCH_ASSOC);
+
+$resort = $DB_con->prepare("SELECT * FROM resortdata WHERE userId=:user_id");
+$resort->execute(array(":user_id"=>$user_id));
+//$resortId = $resort->fetch(PDO::FETCH_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -84,7 +87,7 @@ try {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php while ($r = $q->fetch()): ?>
+                                    <?php while ($r = $resort->fetch()): ?>
                                         <tr>
                                             <td>ชื่อรีสอร์ท ภาษาไทย</td>
                                             <td><?php echo htmlspecialchars($r['nameTH']); ?></td>

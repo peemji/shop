@@ -3,7 +3,7 @@ require_once '/connection/db.php';
 
 if($user->is_loggedin()!="")
 {
-	$user->redirect('home.php');
+	$user->redirect('detailResort.php');
 }
 
 if(isset($_POST['btn-login']))

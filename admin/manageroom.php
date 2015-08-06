@@ -1,6 +1,6 @@
 <?php
 require_once 'connection/db.php';
-try {
+/*try {
     $conn = new PDO("mysql:host=$DB_host;dbname=$DB_name", $DB_user, $DB_pass, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
 
     $sql = 'SELECT * FROM room as a inner join roomtype as b on a.typeID = b.typeID'
@@ -9,7 +9,19 @@ try {
     $q->setFetchMode(PDO::FETCH_ASSOC);
 } catch (PDOException $pe) {
     die("Could not connect to the database $dbname :" . $pe->getMessage());
-}
+}*/
+$user_id = $_SESSION['user_session'];
+$stmt = $DB_con->prepare("SELECT * FROM resortdata WHERE userID=:user_id");
+$stmt->execute(array(":user_id"=>$user_id));
+$userRow=$stmt->fetch(PDO::FETCH_ASSOC);
+
+$sth = $DB_con->query("SELECT * FROM room where resortID = $user_id ");
+$sth->setFetchMode(PDO::FETCH_ASSOC);
+//$sth->execute();
+
+/*print("Fetch all of the remaining rows in the result set:\n");
+$result = $sth->fetch(PDO::FETCH_ASSOC);
+print_r($result['roomName']);*/
 ?>
 
 <!DOCTYPE html>
@@ -75,7 +87,7 @@ try {
 
                     <div class="box">
                         <div class="box-header">
-                            <h3 class="box-title">ประเภทห้องพัก</h3>
+                            <h3 class="box-title">ประเภทห้องพัก </h3>
                         </div><!-- /.box-header -->
                         <div class="box-body">
                             <table id="example2" class="table table-bordered table-hover" width="50%">
@@ -93,7 +105,7 @@ try {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php while ($r = $q->fetch()): ?>
+                                    <?php while ($r = $sth->fetch()): ?>
                                         <tr>
                                             <?php
                                             $id = 0;
@@ -101,7 +113,7 @@ try {
                                             ?>
                                             <td><?php echo $id; ?></td>
                                             <td><?php echo htmlspecialchars($r['roomName']); ?></td>
-                                            <td><?php echo htmlspecialchars($r['typeName']); ?></td>
+                                            <td><?php echo htmlspecialchars($r['typeID']); ?></td>
                                             <td><?php echo htmlspecialchars($r['roomTotal']); ?></td>
                                             <td><?php echo htmlspecialchars($r['roomUse']); ?></td>
                                             <td><?php echo htmlspecialchars($r['roomPrice']); ?></td>
